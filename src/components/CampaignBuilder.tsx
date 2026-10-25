@@ -38,7 +38,11 @@ import {
 } from 'lucide-react';
 import { Contact, EmailAttachment, CampaignFollowUp } from '@/types/database';
 import { verifyLeadList } from '@/lib/utils/verifyEmail';
-import { RAW_50_SAMPLE_CONTACTS, downloadSampleCSVFile } from '@/lib/data/sampleContacts';
+import {
+  ARTICLES_CSV_CATEGORIES,
+  getCategoryContacts,
+  downloadSampleCSVFile,
+} from '@/lib/data/sampleContacts';
 import { EmailTemplatesModal } from './EmailTemplatesModal';
 import { EmailTemplate, CA_ARTICLESHIP_DEMO_TEMPLATE } from '@/lib/data/emailTemplates';
 import { EmailAccountSetupModal } from './EmailAccountSetupModal';
@@ -123,7 +127,7 @@ export const CampaignBuilder: React.FC<CampaignBuilderProps> = ({
   // Step 2 Attachments (Photos and Files)
   const [attachments, setAttachments] = useState<EmailAttachment[]>([]);
 
-  // Step 2 Follow-Up Sequencing
+  // Step 2 Follow-Up Sequencing (Aligned with CA Articleship Main Template)
   const [enableFollowUps, setEnableFollowUps] = useState(false);
   const [followUps, setFollowUps] = useState<CampaignFollowUp[]>([
     {
@@ -131,7 +135,7 @@ export const CampaignBuilder: React.FC<CampaignBuilderProps> = ({
       step_number: 1,
       delay_days: 3,
       subject: '',
-      body_template: `Hi {{first_name}},\n\nFollowing up briefly on my previous email in case it got buried in your inbox.\n\nWould you be open to a 5-minute chat this week?\n\nBest regards,\n${senderName}`,
+      body_template: `Dear Recruitment Team,\n\nI hope you are doing well.\n\nI am writing to respectfully follow up on my previous application regarding a CA Articleship opportunity in the Statutory Audit practice at your firm.\n\nHaving cleared the CA Intermediate examination in my first attempt, I remain very keen to contribute to {{company}} and learn under the mentorship of your experienced professionals. My resume and credentials remain attached for your kind perusal.\n\nI would be truly grateful if you could consider my application for any current or upcoming vacancies. Thank you once again for your time and consideration.\n\nKind regards,\n\n${senderName || '[Your Name]'}\nCA Intermediate Qualified\n[Phone Number]\n[Gmail ID]\nLinkedIn:`,
     },
   ]);
 
@@ -226,7 +230,7 @@ export const CampaignBuilder: React.FC<CampaignBuilderProps> = ({
     setBodyTemplate(tmpl.body.replace(/\{\{\s*sender_name\s*\}\}/g, senderName));
   };
 
-  // Follow-up Step Management
+  // Follow-up Step Management (Aligned with CA Articleship Format)
   const addFollowUpStep = () => {
     const nextStepNum = followUps.length + 1;
     const nextDelay = nextStepNum === 2 ? 5 : 7;
@@ -234,8 +238,8 @@ export const CampaignBuilder: React.FC<CampaignBuilderProps> = ({
       id: `step-fu-${Date.now()}`,
       step_number: nextStepNum,
       delay_days: nextDelay,
-      subject: `Re: ${subject}`,
-      body_template: `Hi {{first_name}},\n\nWanted to quickly circle back on my previous email regarding {{company}}.\n\nBest,\n${senderName}`,
+      subject: `Re: ${subject || 'Application for CA Articleship- Statutory Audit | CA Intermediate Qualified'}`,
+      body_template: `Dear Recruitment Team,\n\nI hope you are doing well.\n\nFurther to my previous email regarding the CA Articleship opening in Statutory Audit at {{company}}, I wanted to reiterate my strong enthusiasm for joining your practice.\n\nWith a first-attempt clearance in CA Intermediate, I am eager to apply my technical foundation to statutory audit procedures while learning from your experienced team. My resume and marksheets remain attached for your review.\n\nThank you for your time and continued consideration.\n\nKind regards,\n\n${senderName || '[Your Name]'}\nCA Intermediate Qualified\n[Phone Number]\n[Gmail ID]\nLinkedIn:`,
     };
     setFollowUps((prev) => [...prev, newStep]);
   };
@@ -930,25 +934,101 @@ export const CampaignBuilder: React.FC<CampaignBuilderProps> = ({
         </div>
       )}
 
-      {/* STEP 3: CSV CONTACTS UPLOAD */}
+      {/* STEP 3: CSV CONTACTS UPLOAD & PRELOADED CA FIRMS */}
       {currentStep === 3 && (
         <div className="bg-white p-6 sm:p-7 rounded-[28px] border border-slate-200/90 shadow-[0_1px_3px_rgba(15,23,42,0.03),0_6px_20px_-4px_rgba(15,23,42,0.04)] space-y-5 animate-in fade-in duration-200">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <div>
               <h2 className="text-lg font-bold text-slate-900 font-poppins">Import Contacts CSV</h2>
-              <p className="text-xs text-slate-500">Upload a spreadsheet containing recipient emails, names, and companies</p>
+              <p className="text-xs text-slate-500">Pick a preloaded CA firm list or upload your custom recipient CSV</p>
             </div>
             <div className="flex items-center space-x-2">
               <button
                 type="button"
                 onClick={() => setShowSampleCsvModal(true)}
                 className="text-xs px-4 py-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-bold transition flex items-center space-x-2 shadow-sm active:scale-95"
-                title="Browse & download example CSV format templates for Big 4, Top 10, Mid-size, and Boutique firm applications"
+                title="Browse & download verified CSV lists for Big 4, Top 10, and Top 20 CA firm applications"
               >
                 <FileSpreadsheet className="w-3.5 h-3.5 text-[#d4f933]" />
-                <span>Sample CSV Templates (4 Tiers)</span>
+                <span>Preloaded Lists (3 Tiers)</span>
               </button>
             </div>
+          </div>
+
+          {/* Quick Preloaded Options */}
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-50 via-sky-50/40 to-slate-50 border border-slate-200/90 space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+              <div className="flex items-center space-x-2">
+                <Sparkles className="w-4 h-4 text-sky-600" />
+                <span className="text-xs font-bold text-slate-900 font-poppins">
+                  Preloaded CA Firm Contact Lists
+                </span>
+                <span className="text-[10px] font-semibold bg-sky-100 text-sky-800 px-2 py-0.5 rounded-full">
+                  1-Click Load
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowSampleCsvModal(true)}
+                className="text-[11px] font-medium text-sky-700 hover:text-sky-900 hover:underline flex items-center space-x-1 self-start sm:self-auto"
+              >
+                <span>Preview & Download CSVs</span>
+                <ArrowRight className="w-3 h-3" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              {ARTICLES_CSV_CATEGORIES.map((cat) => {
+                const isLoaded = csvFileName === cat.filename;
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => {
+                      const loaded = getCategoryContacts(cat.id);
+                      const { verified, risky, invalid } = verifyLeadList(loaded);
+                      setVerificationStats({
+                        verified: verified.length,
+                        risky: risky.length,
+                        invalid: invalid.length,
+                      });
+                      setContacts(loaded);
+                      setCsvFileName(cat.filename);
+                    }}
+                    className={`p-3 rounded-2xl border text-left transition-all flex items-center justify-between group ${
+                      isLoaded
+                        ? 'bg-white border-slate-950 shadow-sm ring-2 ring-slate-950/10'
+                        : 'bg-white/80 border-slate-200 hover:border-slate-300 hover:bg-white'
+                    }`}
+                  >
+                    <div className="space-y-0.5 pr-2">
+                      <div className="flex items-center space-x-1.5">
+                        <span className="text-base">{cat.icon}</span>
+                        <span className="text-xs font-bold text-slate-900 font-poppins">{cat.shortName}</span>
+                      </div>
+                      <p className="text-[10px] text-slate-500">{cat.contacts.length} Verified HRs</p>
+                    </div>
+                    <span
+                      className={`text-[11px] font-bold px-2.5 py-1 rounded-full transition ${
+                        isLoaded
+                          ? 'bg-slate-900 text-white'
+                          : 'bg-slate-100 text-slate-700 group-hover:bg-[#d4f933] group-hover:text-slate-950'
+                      }`}
+                    >
+                      {isLoaded ? 'Loaded ✓' : 'Load'}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="relative flex py-1 items-center">
+            <div className="flex-grow border-t border-slate-200"></div>
+            <span className="flex-shrink mx-4 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              Or Upload Custom CSV
+            </span>
+            <div className="flex-grow border-t border-slate-200"></div>
           </div>
 
           {/* Upload Dropzone */}

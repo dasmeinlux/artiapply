@@ -720,7 +720,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       </span>
                     </div>
                     <p className="text-[11px] text-slate-600 line-clamp-2">
-                      Dear &#123;&#123;first_name&#125;&#125;, following up respectfully regarding my articleship application submitted last week for your kind consideration.
+                      Dear Recruitment Team, I hope you are doing well. I am writing to respectfully follow up on my previous application regarding a CA Articleship opportunity in Statutory Audit at &#123;&#123;company&#125;&#125;...
                     </p>
                   </div>
                 </div>

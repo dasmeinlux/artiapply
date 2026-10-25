@@ -308,7 +308,7 @@ export const GuideModal: React.FC<GuideModalProps> = ({
                       </button>
                     </div>
                     <p className="text-xs text-slate-500">
-                      Upload your own CSV with columns <code className="font-mono bg-slate-100 px-1 py-0.5 rounded text-[11px]">email, first_name, company, role</code> or click &ldquo;Load 50 Samples&rdquo; to test immediately.
+                      Upload your own CSV with columns <code className="font-mono bg-slate-100 px-1 py-0.5 rounded text-[11px]">email, first_name, company, role</code> or select preloaded Big 4, Top 10, or Top 20 CA firm contacts to test immediately.
                     </p>
                   </div>
                 </div>

@@ -37,7 +37,9 @@ export const EmailTemplatesModal: React.FC<EmailTemplatesModalProps> = ({
   if (!isOpen) return null;
 
   const categories = [
-    { id: 'all', label: 'CA Articleship Format' },
+    { id: 'all', label: 'All Formats' },
+    { id: 'articleship', label: 'Initial Application' },
+    { id: 'followup', label: 'Follow-Up Formats' },
   ];
 
   const filteredTemplates = PROFESSIONAL_EMAIL_TEMPLATES.filter((tmpl) => {

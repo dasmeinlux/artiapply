@@ -62,15 +62,29 @@ export const TakeFollowUpModal: React.FC<TakeFollowUpModalProps> = ({
 
     setSubject(baseSubject);
 
+    const candidateName = userName || 'Applicant';
+
     if (selectedPreset === 'bump') {
       const tmpl = PROFESSIONAL_EMAIL_TEMPLATES.find((t) => t.id === 'followup-gentle-bump');
-      setBodyTemplate(tmpl ? tmpl.body.replace('{{sender_name}}', userName || 'Alex') : `Hi {{first_name}},\n\nFollowing up briefly on my previous email to make sure it didn't get buried.\n\nDo you have 5 minutes this week?\n\nBest,\n${userName || 'Alex'}`);
+      setBodyTemplate(
+        tmpl
+          ? tmpl.body.replace(/\[Your Name\]/g, candidateName).replace(/\{\{\s*sender_name\s*\}\}/g, candidateName)
+          : `Dear Recruitment Team,\n\nI hope you are doing well.\n\nI am writing to respectfully follow up on my previous application regarding an Articleship opportunity in the Statutory Audit practice at {{company}}.\n\nHaving cleared the CA Intermediate examination in my first attempt, I remain very keen to contribute and develop a strong foundation under the guidance of your esteemed team. My resume and credentials remain attached for your kind perusal.\n\nI would be truly grateful if you could consider my application for any current or upcoming vacancies. Thank you once again for your time and consideration.\n\nKind regards,\n\n${candidateName}\nCA Intermediate Qualified\n[Phone Number]\n[Gmail ID]\nLinkedIn:`
+      );
     } else if (selectedPreset === 'value') {
       const tmpl = PROFESSIONAL_EMAIL_TEMPLATES.find((t) => t.id === 'followup-value-add');
-      setBodyTemplate(tmpl ? tmpl.body.replace('{{sender_name}}', userName || 'Alex') : `Hi {{first_name}},\n\nWanted to share a quick benchmark relevant to {{company}}'s outreach goals...\n\nBest,\n${userName || 'Alex'}`);
+      setBodyTemplate(
+        tmpl
+          ? tmpl.body.replace(/\[Your Name\]/g, candidateName).replace(/\{\{\s*sender_name\s*\}\}/g, candidateName)
+          : `Dear Recruitment Team,\n\nI hope you are doing well.\n\nFurther to my previous email regarding the CA Articleship position in Statutory Audit at {{company}}, I wanted to reiterate my strong enthusiasm for joining your practice.\n\nWith a first-attempt clearance in CA Intermediate, I am eager to apply my technical foundation to statutory audit procedures while learning from your experienced team. My resume and marksheets remain attached for your review.\n\nThank you for your time and continued consideration.\n\nKind regards,\n\n${candidateName}\nCA Intermediate Qualified\n[Phone Number]\n[Gmail ID]\nLinkedIn:`
+      );
     } else if (selectedPreset === 'breakup') {
       const tmpl = PROFESSIONAL_EMAIL_TEMPLATES.find((t) => t.id === 'followup-polite-breakup');
-      setBodyTemplate(tmpl ? tmpl.body.replace('{{sender_name}}', userName || 'Alex') : `Hi {{first_name}},\n\nI haven't heard back, so I assume this isn't a current priority for {{company}} right now—completely understand! I'll close our file so I don't crowd your inbox.\n\nBest,\n${userName || 'Alex'}`);
+      setBodyTemplate(
+        tmpl
+          ? tmpl.body.replace(/\[Your Name\]/g, candidateName).replace(/\{\{\s*sender_name\s*\}\}/g, candidateName)
+          : `Dear Recruitment Team,\n\nI hope you are doing well.\n\nI am writing a final brief follow-up regarding my application for a CA Articleship opportunity in Statutory Audit at {{company}}.\n\nI understand that your recruitment schedule during this period is very busy. If there are no current openings available, I would be grateful if you could keep my profile on file for future articleship vacancies.\n\nThank you very much for your time, consideration, and guidance.\n\nKind regards,\n\n${candidateName}\nCA Intermediate Qualified\n[Phone Number]\n[Gmail ID]\nLinkedIn:`
+      );
     }
   }, [campaign, selectedPreset, userName]);
 
@@ -270,9 +284,9 @@ export const TakeFollowUpModal: React.FC<TakeFollowUpModalProps> = ({
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {[
-                { id: 'bump', label: '1. Gentle Bump', desc: 'Day 3 reminder' },
-                { id: 'value', label: '2. Value & Case Study', desc: 'Day 5 insight' },
-                { id: 'breakup', label: '3. Polite Breakup', desc: 'Final close-out' },
+                { id: 'bump', label: '1. Polite Check-In', desc: 'Day 3 follow-up' },
+                { id: 'value', label: '2. Credentials & Intent', desc: 'Day 5 follow-up' },
+                { id: 'breakup', label: '3. Courteous Final Note', desc: 'Keep profile on file' },
                 { id: 'custom', label: 'Custom Message', desc: 'Write your own' },
               ].map((p) => (
                 <button

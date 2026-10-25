@@ -5,14 +5,10 @@ import {
   X,
   Download,
   FileSpreadsheet,
-  CheckCircle2,
   Copy,
   Check,
   Sparkles,
-  ArrowRight,
   ShieldCheck,
-  Building2,
-  Users,
 } from 'lucide-react';
 import {
   ARTICLES_CSV_CATEGORIES,
@@ -44,7 +40,7 @@ export const SampleCsvModal: React.FC<SampleCsvModalProps> = ({
     ARTICLES_CSV_CATEGORIES[0];
 
   const handleCopyHeaders = () => {
-    const headerStr = 'first_name,last_name,email,company,role,location';
+    const headerStr = 'EMAIL,FIRST NAME,COMPANY,ROLE';
     navigator.clipboard.writeText(headerStr);
     setCopiedHeaders(true);
     setTimeout(() => setCopiedHeaders(false), 2500);
@@ -77,14 +73,14 @@ export const SampleCsvModal: React.FC<SampleCsvModalProps> = ({
             <div>
               <div className="flex items-center space-x-2">
                 <h3 className="text-lg font-bold text-slate-900 font-poppins">
-                  Sample CSV Formatting Templates
+                  Preloaded CA Firm Contact Lists
                 </h3>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 uppercase tracking-wider">
-                  Formatting Guides
+                  3 Verified Tiers
                 </span>
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
-                Download or inspect example CSV column layouts to format your own recruiter and employer contact lists.
+                Preloaded recruiter contact lists for Big 4, Top 10, and Top 20 CA firms. Inspect, download, or 1-click load into your campaign.
               </p>
             </div>
           </div>
@@ -97,9 +93,9 @@ export const SampleCsvModal: React.FC<SampleCsvModalProps> = ({
           </button>
         </div>
 
-        {/* 4 Category Selection Pills / Cards */}
+        {/* 3 Category Selection Cards */}
         <div className="p-4 sm:p-5 border-b border-slate-100 bg-slate-50/70">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             {ARTICLES_CSV_CATEGORIES.map((cat) => {
               const isSelected = cat.id === selectedCategory;
               return (
@@ -126,7 +122,7 @@ export const SampleCsvModal: React.FC<SampleCsvModalProps> = ({
                       {cat.shortName}
                     </h4>
                     <span className="text-[10px] text-slate-500 block truncate">
-                      {cat.contacts.length} Example Rows
+                      {cat.contacts.length} Verified Contacts
                     </span>
                   </div>
                 </button>
@@ -144,14 +140,14 @@ export const SampleCsvModal: React.FC<SampleCsvModalProps> = ({
                   {currentCategoryInfo.name}
                 </span>
                 <span className="text-[10px] font-semibold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">
-                  {currentCategoryInfo.contacts.length} Demo Rows
+                  {currentCategoryInfo.contacts.length} Leads
                 </span>
               </div>
               <p className="text-[11px] text-slate-600 max-w-xl leading-relaxed">
                 {currentCategoryInfo.description}
               </p>
               <div className="text-[11px] text-slate-500 pt-1">
-                <strong>Practice Focus:</strong> {currentCategoryInfo.highlightFirms}
+                <strong>Featured Firms:</strong> {currentCategoryInfo.highlightFirms}
               </div>
             </div>
 
@@ -181,10 +177,10 @@ export const SampleCsvModal: React.FC<SampleCsvModalProps> = ({
         <div className="p-5 sm:p-6 pt-2 flex-1 overflow-y-auto space-y-3">
           <div className="flex items-center justify-between text-xs">
             <span className="font-bold text-slate-700 uppercase tracking-wider text-[11px]">
-              Template Preview ({currentCategoryInfo.contacts.length} example entries)
+              Contacts Preview ({currentCategoryInfo.contacts.length} entries)
             </span>
             <span className="text-[11px] text-slate-400">
-              Template file: <code className="font-mono text-slate-700">{currentCategoryInfo.filename}</code>
+              CSV file: <code className="font-mono text-slate-700">{currentCategoryInfo.filename}</code>
             </span>
           </div>
 
@@ -193,12 +189,10 @@ export const SampleCsvModal: React.FC<SampleCsvModalProps> = ({
               <table className="w-full text-left text-xs">
                 <thead className="bg-slate-100 border-b border-slate-200 text-slate-700 font-bold sticky top-0 z-10">
                   <tr>
-                    <th className="px-3.5 py-2">first_name</th>
-                    <th className="px-3.5 py-2">last_name</th>
-                    <th className="px-3.5 py-2">email</th>
-                    <th className="px-3.5 py-2">company</th>
-                    <th className="px-3.5 py-2">role</th>
-                    <th className="px-3.5 py-2">location</th>
+                    <th className="px-3.5 py-2">EMAIL</th>
+                    <th className="px-3.5 py-2">FIRST NAME</th>
+                    <th className="px-3.5 py-2">COMPANY</th>
+                    <th className="px-3.5 py-2">ROLE</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-slate-700">
@@ -207,12 +201,10 @@ export const SampleCsvModal: React.FC<SampleCsvModalProps> = ({
                       key={idx}
                       className={idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50 hover:bg-sky-50/30 transition'}
                     >
+                      <td className="px-3.5 py-2 font-mono text-[11px] text-sky-700 font-medium">{row.email}</td>
                       <td className="px-3.5 py-2 font-semibold text-slate-900">{row.first_name}</td>
-                      <td className="px-3.5 py-2">{row.last_name}</td>
-                      <td className="px-3.5 py-2 font-mono text-[11px] text-sky-700">{row.email}</td>
                       <td className="px-3.5 py-2 font-medium text-slate-900">{row.company}</td>
                       <td className="px-3.5 py-2 text-slate-500">{row.role}</td>
-                      <td className="px-3.5 py-2 text-slate-500">{row.location}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -223,7 +215,7 @@ export const SampleCsvModal: React.FC<SampleCsvModalProps> = ({
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 flex items-center space-x-2">
             <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>
-              <strong>Compliance Notice:</strong> ArticlO does not provide scraped leads. These templates use reserved example domains to show how to format your own recruiter lists.
+              <strong>Preloaded Directory:</strong> Verified recruiter and HR contacts across top statutory audit and accounting firms, formatted for sequential delivery.
             </span>
           </div>
         </div>
@@ -251,7 +243,7 @@ export const SampleCsvModal: React.FC<SampleCsvModalProps> = ({
               </span>
             </button>
 
-            {/* Optional 1-Click Load into Campaign */}
+            {/* 1-Click Load into Campaign */}
             {onLoadContacts && (
               <button
                 type="button"

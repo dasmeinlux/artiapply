@@ -262,14 +262,14 @@ export const ContactsDirectory: React.FC<ContactsDirectoryProps> = ({
 
         {/* Action Buttons: Sample Download and Upload CSV */}
         <div className="flex flex-wrap items-center gap-2">
-          {/* 1. Download Sample CSV File Pop-up */}
+          {/* 1. Preloaded CA Firm Lists Pop-up */}
           <button
             onClick={() => setShowSampleCsvModal(true)}
-            title="Download ready-to-use sample CSV with 50 verified leads"
+            title="Browse & download preloaded Big 4, Top 10, or Top 20 CA firm contacts"
             className="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-medium transition shadow-sm active:scale-95"
           >
             <Download className="w-3.5 h-3.5 text-slate-500" />
-            <span>Download Sample File (50 entries)</span>
+            <span>Preloaded Firm Contacts (3 Tiers)</span>
           </button>
 
           {/* 3. Self Upload CSV Button */}
@@ -413,7 +413,7 @@ export const ContactsDirectory: React.FC<ContactsDirectoryProps> = ({
                     <Users className="w-8 h-8 mx-auto text-slate-400 mb-2" />
                     <p className="font-semibold text-slate-800 font-poppins">No contacts found</p>
                     <p className="text-xs text-slate-500 mt-1">
-                      Click <strong className="text-slate-900">&quot;Load 50 Samples&quot;</strong> or <strong className="text-slate-900">&quot;Upload Your CSV&quot;</strong> to add contacts.
+                      Click <strong className="text-slate-900">&quot;Preloaded Firm Contacts&quot;</strong> or <strong className="text-slate-900">&quot;Upload CSV&quot;</strong> to add contacts.
                     </p>
                   </td>
                 </tr>
@@ -534,7 +534,7 @@ export const ContactsDirectory: React.FC<ContactsDirectoryProps> = ({
                   }}
                   className="text-slate-900 hover:underline font-semibold cursor-pointer"
                 >
-                  Download 50 sample leads CSV
+                  Download preloaded CA leads CSV
                 </span>
               </div>
             </div>
